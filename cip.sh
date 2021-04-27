@@ -71,9 +71,10 @@ do
     # On découpe l'arguement ou prendre le Masque CIDR
     masquecidr=$(echo $traitement | cut -d \/ -f 2)
 
+    # Exception pour l'ip 255.255.255.255/32
     if [ "$ip" == "255.255.255.255" -a $masquecidr -eq 32 ]
     then
-        fichier="$(echo $ip | tr '.' '_').txt"
+        fichier="$(echo $ip | tr '.' '_')_$masquecidr.txt"
         > $fichier
         echo '┌---------------------------------------------┐' | tee -a $fichier
         echo "              Masque du réseau :" | tee -a $fichier
@@ -161,7 +162,7 @@ do
     octethex4masque=$(dec2hex  $octetdecimal4masque)
 
     # Création ou vidage du fichier contenant les informations sur l'ip
-    fichier="$(echo $ip | tr '.' '_').txt"
+    fichier="$(echo $ip | tr '.' '_')_$masquecidr.txt"
     > $fichier
     # Affichage des informations à l'écran et enregistrement dans le fichier 
     echo '┌---------------------------------------------┐' | tee -a $fichier
