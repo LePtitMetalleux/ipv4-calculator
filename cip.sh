@@ -64,37 +64,14 @@ do
     # Si l'agument est -h ou --help on affiche le menu d'aide
     [ "$traitement" == '-h' -o "$traitement" == '--help' ] && echo "Menu d'aide :" && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
     # Validation de l'ip, on passe à l'aguement suivant si l'argument n'est pas une IPv4
-    [ $(echo "$traitement" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' | wc -l) -eq 0 ] && continue
+    [ $(echo "$traitement" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' | wc -l) -eq 0 ] && echo "L'adresse IP $traitement n'est pas valide." && continue
     
     # On découpe l'arguement ou prendre la partie IP
     ip=$(echo $traitement | cut -d \/ -f 1)
     # On découpe l'arguement ou prendre le Masque CIDR
     masquecidr=$(echo $traitement | cut -d \/ -f 2)
 
-    # Exception pour l'ip 255.255.255.255/32
-    if [ "$ip" == "255.255.255.255" -a $masquecidr -eq 32 ]
-    then
-        fichier="$(echo $ip | tr '.' '_')_$masquecidr.txt"
-        > $fichier
-        echo '┌---------------------------------------------┐' | tee -a $fichier
-        echo "              Masque du réseau :" | tee -a $fichier
-        echo " Décimal : 255.255.255.255" | tee -a $fichier
-        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
-        echo " CIDR : /$masquecidr" | tee -a $fichier
-        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
-        echo '|---------------------------------------------|' | tee -a $fichier
-        echo "               Masque inverse :" | tee -a $fichier
-        echo " Décimal 0.0.0.0" | tee -a $fichier
-        echo " Binaire : 00000000.00000000.00000000.00000000" | tee -a $fichier
-        echo " Hexadécimal : 00.00.00.00"| tee -a $fichier
-        echo '|---------------------------------------------|' | tee -a $fichier
-        echo " Seul hôte possible : " | tee -a $fichier
-        echo " Décimal : 255.255.255.255" | tee -a $fichier
-        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
-        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
-        echo '└---------------------------------------------┘' | tee -a $fichier
-        continue
-    fi
+    [ $masquecidr -gt 32 -o $masquecidr -lt 0 ] && echo "Le masque indiqué (/$masquecidr) pour l'adresse IP $ip est invalide. Le masque doit être compris entre 0 et 32." && continue
 
     # Création de variables en découpant l'ip aux points
     IFS=. read octet1ip octet2ip octet3ip octet4ip <<< $ip
@@ -164,6 +141,30 @@ do
     # Création ou vidage du fichier contenant les informations sur l'ip
     fichier="$(echo $ip | tr '.' '_')_$masquecidr.txt"
     > $fichier
+
+    # Exception pour les IPs en /32
+    if [ $masquecidr -eq 32 ]
+    then
+        echo '┌---------------------------------------------┐' | tee -a $fichier
+        echo "              Masque du réseau :" | tee -a $fichier
+        echo " Décimal : 255.255.255.255" | tee -a $fichier
+        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
+        echo " CIDR : /32" | tee -a $fichier
+        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
+        echo '|---------------------------------------------|' | tee -a $fichier
+        echo "               Masque inverse :" | tee -a $fichier
+        echo " Décimal 0.0.0.0" | tee -a $fichier
+        echo " Binaire : 00000000.00000000.00000000.00000000" | tee -a $fichier
+        echo " Hexadécimal : 00.00.00.00"| tee -a $fichier
+        echo '|---------------------------------------------|' | tee -a $fichier
+        echo " Seul hôte possible : " | tee -a $fichier
+        echo " Décimal : $ip" | tee -a $fichier
+        echo " Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip" | tee -a $fichier
+        echo " Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)" | tee -a $fichier
+        echo '└---------------------------------------------┘' | tee -a $fichier
+        continue
+    fi
+
     # Affichage des informations à l'écran et enregistrement dans le fichier 
     echo '┌---------------------------------------------┐' | tee -a $fichier
     echo "            Adresse de la machine :" | tee -a $fichier
