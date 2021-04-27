@@ -5,6 +5,7 @@
 # Usage : ./cip.sh <IPv4>/<Masque en décimal pointé> (<IPv4>/<Masque en décimal pointé>) (...)
 # Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
 # Version 1.3.0
+# Licence : MIT
 
 [ $# -lt 1 ] && echo "Menu d'aide :" && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
 
