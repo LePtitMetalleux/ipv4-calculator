@@ -64,7 +64,7 @@ do
     # Si l'agument est -h ou --help on affiche le menu d'aide
     [ "$traitement" == '-h' -o "$traitement" == '--help' ] && echo "Menu d'aide :" && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
     # Validation de l'ip, on passe à l'aguement suivant si l'argument n'est pas une IPv4
-    [ "$1" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' ] && continue
+    [ "$1" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' | wc -l -eq 0 ] && continue
     
     # On découpe l'arguement ou prendre la partie IP
     ip=$(echo $traitement | cut -d \/ -f 1)
