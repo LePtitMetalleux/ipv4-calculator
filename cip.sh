@@ -64,7 +64,7 @@ do
     # Si l'agument est -h ou --help on affiche le menu d'aide
     [ "$traitement" == '-h' -o "$traitement" == '--help' ] && echo "Menu d'aide :" && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
     # Validation de l'ip, on passe à l'aguement suivant si l'argument n'est pas une IPv4
-    [ $(echo "$1" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' | wc -l) -eq 0 ] && continue
+    [ $(echo "$traitement" | grep -E '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' | wc -l) -eq 0 ] && continue
     
     # On découpe l'arguement ou prendre la partie IP
     ip=$(echo $traitement | cut -d \/ -f 1)
@@ -138,7 +138,7 @@ do
 
     # Création ou vidage du fichier contenant les informations sur l'ip
     fichier="$(echo $ip | tr '.' '_').txt"
-
+    > $fichier
     # Affichage des informations à l'écran et enregistrement dans le fichier 
     echo '┌---------------------------------------------┐' | tee -a $fichier
     echo "            Adresse de la machine :" | tee -a $fichier
