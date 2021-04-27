@@ -71,6 +71,30 @@ do
     # On découpe l'arguement ou prendre le Masque CIDR
     masquecidr=$(echo $traitement | cut -d \/ -f 2)
 
+    if [ "$ip" == "255.255.255.255" -a $masquecidr -eq 32 ]
+    then
+        fichier="$(echo $ip | tr '.' '_').txt"
+        > $fichier
+        echo '┌---------------------------------------------┐' | tee -a $fichier
+        echo "              Masque du réseau :" | tee -a $fichier
+        echo " Décimal : 255.255.255.255" | tee -a $fichier
+        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
+        echo " CIDR : /$masquecidr" | tee -a $fichier
+        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
+        echo '|---------------------------------------------|' | tee -a $fichier
+        echo "               Masque inverse :" | tee -a $fichier
+        echo " Décimal 0.0.0.0" | tee -a $fichier
+        echo " Binaire : 00000000.00000000.00000000.00000000" | tee -a $fichier
+        echo " Hexadécimal : 00.00.00.00"| tee -a $fichier
+        echo '|---------------------------------------------|' | tee -a $fichier
+        echo " Seul hôte possible : " | tee -a $fichier
+        echo " Décimal : 255.255.255.255" | tee -a $fichier
+        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
+        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
+        echo '└---------------------------------------------┘' | tee -a $fichier
+        continue
+    fi
+
     # Création de variables en découpant l'ip aux points
     IFS=. read octet1ip octet2ip octet3ip octet4ip <<< $ip
 
