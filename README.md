@@ -2,6 +2,7 @@
 Calculatrice IPv4 Multifonctions
 
 Usage : ./cip.sh <IPv4>/<Masque en décimal pointé> (<IPv4>/<Masque en décimal pointé>) (...)
+
 Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
 
 TODO :
