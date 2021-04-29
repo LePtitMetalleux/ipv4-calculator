@@ -22,6 +22,7 @@ Mode interactif
 Fichier de config :
   - Sélection du mode interactif ou non ?
   - Format de sortie : Console, fichier (fotmat de fichier ? csv, txt) ou les deux
+    - Si CSV : Un seul fichier ou en séparés ?
 
 Support IPv6 ?
    
