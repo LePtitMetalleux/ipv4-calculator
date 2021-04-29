@@ -12,7 +12,8 @@ Usage : ./cip.sh <IPv4>/<Masque en décimal pointé> (<IPv4>/<Masque en décimal
 
 Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
 
-Sortie : 
+Sortie :
+ 
 ![image](https://user-images.githubusercontent.com/59097429/116513398-cf9d0880-a8c9-11eb-985c-2ab34f2b9fdc.png)
 
 TODO :
