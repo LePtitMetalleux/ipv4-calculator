@@ -8,7 +8,7 @@ Très simple d'utilisation, elle vous permet de calculer différents information
 - Première et dernière adresse d'hôte
 L'affichage des informations se fait via la console ainsi que dans un fichier texte !
 
-Usage : ./cip.sh <IPv4>/<Masque en décimal pointé> (<IPv4>/<Masque en décimal pointé>) (...)
+Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 
 Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
 
@@ -25,4 +25,3 @@ Fichier de config :
     - Si CSV : Un seul fichier ou en séparés ?
 
 Support IPv6 ?
-   
