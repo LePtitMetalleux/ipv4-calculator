@@ -4,7 +4,7 @@
 # Utilité : Calculatrice IPv4 multifonctions
 # Usage : ./cip.sh <IPv4>/<Masque en décimal pointé> (<IPv4>/<Masque en décimal pointé>) (...)
 # Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
-# Version 1.3.0
+# Version 1.3.1
 # Licence : MIT License
 
 # Copyright (c) 2021 LePtitMetalleux
@@ -57,6 +57,21 @@ dec2hex() {
         taille=${#bin}
     done
     echo "$bin"
+}
+
+format() {
+    # Nombre de caractères dans une ligne sous un format correct - 1 pour le pipe de fin de ligne
+    formatedlength=46
+    # Ligne à traiter
+    toformat=$1
+    taille=${#toformat}
+    while [ $taille -lt $formatedlength ]
+    do
+        toformat="$toformat "
+        taille=${#toformat}
+    done
+    toformat="$toformat|"
+    echo "$toformat"
 }
 
 for traitement in $@
@@ -146,64 +161,64 @@ do
     if [ $masquecidr -eq 32 ]
     then
         echo '┌---------------------------------------------┐' | tee -a $fichier
-        echo "              Masque du réseau :" | tee -a $fichier
-        echo " Décimal : 255.255.255.255" | tee -a $fichier
-        echo " Binaire : 11111111.11111111.11111111.11111111" | tee -a $fichier
-        echo " CIDR : /32" | tee -a $fichier
-        echo " Hexadécimal : FF.FF.FF.FF" | tee -a $fichier
+        echo "|             Masque du réseau :              |" | tee -a $fichier
+        echo "|Décimal : 255.255.255.255                    |" | tee -a $fichier
+        echo "|Binaire : 11111111.11111111.11111111.11111111|" | tee -a $fichier
+        echo "|CIDR : /32                                   |" | tee -a $fichier
+        echo "|Hexadécimal : FF.FF.FF.FF                    |" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "               Masque inverse :" | tee -a $fichier
-        echo " Décimal 0.0.0.0" | tee -a $fichier
-        echo " Binaire : 00000000.00000000.00000000.00000000" | tee -a $fichier
-        echo " Hexadécimal : 00.00.00.00"| tee -a $fichier
+        echo "|              Masque inverse :               |" | tee -a $fichier
+        echo "|Décimal 0.0.0.0                              |" | tee -a $fichier
+        echo "|Binaire : 00000000.00000000.00000000.00000000|" | tee -a $fichier
+        echo "|Hexadécimal : 00.00.00.00                    |" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo " Seul hôte possible : " | tee -a $fichier
-        echo " Décimal : $ip" | tee -a $fichier
-        echo " Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip" | tee -a $fichier
-        echo " Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)" | tee -a $fichier
+        echo "|            Seul hôte possible :             |" | tee -a $fichier
+        echo "$(format "|Décimal : $ip")" | tee -a $fichier
+        echo "$(format "|Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip")" | tee -a $fichier
+        echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
         echo '└---------------------------------------------┘' | tee -a $fichier
         continue
     fi
 
     # Affichage des informations à l'écran et enregistrement dans le fichier 
     echo '┌---------------------------------------------┐' | tee -a $fichier
-    echo "            Adresse de la machine :" | tee -a $fichier
-    echo " Décimal : $ip" | tee -a $fichier
-    echo " Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)" | tee -a $fichier
+    echo "$(format "|           Adresse de la machine :")" | tee -a $fichier
+    echo "$(format "|Décimal : $ip")" | tee -a $fichier
+    echo "$(format "|Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo "              Masque du réseau :" | tee -a $fichier
-    echo " Décimal : $masquedp" | tee -a $fichier
-    echo " Binaire : $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque" | tee -a $fichier
-    echo " CIDR : /$masquecidr" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $octetdecimal1masque).$(dec2hex $octetdecimal2masque).$(dec2hex $octetdecimal3masque).$(dec2hex $octetdecimal4masque)" | tee -a $fichier
+    echo "$(format "|             Masque du réseau :")" | tee -a $fichier
+    echo "$(format "|Décimal : $masquedp")" | tee -a $fichier
+    echo "$(format "|Binaire : $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque")" | tee -a $fichier
+    echo "$(format "|CIDR : /$masquecidr")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $octetdecimal1masque).$(dec2hex $octetdecimal2masque).$(dec2hex $octetdecimal3masque).$(dec2hex $octetdecimal4masque)")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo "               Masque inverse :" | tee -a $fichier
-    echo " Décimal $((255 - $octetdecimal1masque)).$((255 - $octetdecimal2masque)).$((255 - $octetdecimal3masque)).$((255 - $octetdecimal4masque))" | tee -a $fichier
-    echo " Binaire : $(echo $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque | tr '1' '_' | tr '0' '1' | tr '_' '0')" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $((255 - $octetdecimal1masque))).$(dec2hex $((255 - $octetdecimal2masque))).$(dec2hex $((255 - $octetdecimal3masque))).$(dec2hex $((255 - $octetdecimal4masque)))"| tee -a $fichier
+    echo "$(format "|              Masque inverse :")" | tee -a $fichier
+    echo "$(format "|Décimal $((255 - $octetdecimal1masque)).$((255 - $octetdecimal2masque)).$((255 - $octetdecimal3masque)).$((255 - $octetdecimal4masque))")" | tee -a $fichier
+    echo "$(format "|Binaire : $(echo $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque | tr '1' '_' | tr '0' '1' | tr '_' '0')")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $((255 - $octetdecimal1masque))).$(dec2hex $((255 - $octetdecimal2masque))).$(dec2hex $((255 - $octetdecimal3masque))).$(dec2hex $((255 - $octetdecimal4masque)))")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo "              Adresse du réseau :" | tee -a $fichier
-    echo " Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$((octet4ip & octetdecimal4masque))" | tee -a $fichier
-    echo " Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $((octet4ip & octetdecimal4masque)))" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $((octet4ip & octetdecimal4masque)))" | tee -a $fichier
+    echo "$(format "|             Adresse du réseau :")" | tee -a $fichier
+    echo "$(format "|Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$((octet4ip & octetdecimal4masque))")" | tee -a $fichier
+    echo "$(format "|Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $((octet4ip & octetdecimal4masque)))")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $((octet4ip & octetdecimal4masque)))")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo "             Adresse de broadcast :" | tee -a $fichier
-    echo " Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$((256 + (octet4ip | ~octetdecimal4masque)))" | tee -a $fichier
-    echo " Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $((256 + (octet4ip | ~octetdecimal4masque))))" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $((256 + (octet4ip | ~octetdecimal4masque))))" | tee -a $fichier
+    echo "$(format "|            Adresse de broadcast :")" | tee -a $fichier
+    echo "$(format "|Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$((256 + (octet4ip | ~octetdecimal4masque)))")" | tee -a $fichier
+    echo "$(format "|Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $((256 + (octet4ip | ~octetdecimal4masque))))")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $((256 + (octet4ip | ~octetdecimal4masque))))")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo " Nombre d'hôtes possibles : $((2 ** (32 - $masquecidr) - 2))" | tee -a $fichier
+    echo "$(format "|Nombre d'hôtes possibles : $((2 ** (32 - $masquecidr) - 2))")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo " Adresse du premier hôte : " | tee -a $fichier
-    echo " Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$(((octet4ip & octetdecimal4masque)+1))" | tee -a $fichier
-    echo " Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $(((octet4ip & octetdecimal4masque)+1)))" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $(((octet4ip & octetdecimal4masque)+1)))" | tee -a $fichier
+    echo "$(format "|Adresse du premier hôte : ")" | tee -a $fichier
+    echo "$(format "|Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$(((octet4ip & octetdecimal4masque)+1))")" | tee -a $fichier
+    echo "$(format "|Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $(((octet4ip & octetdecimal4masque)+1)))")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $(((octet4ip & octetdecimal4masque)+1)))")" | tee -a $fichier
     echo '|---------------------------------------------|' | tee -a $fichier
-    echo " Adresse du dernier hôte : " | tee -a $fichier
-    echo " Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$(((256 + (octet4ip | ~octetdecimal4masque))-1))" | tee -a $fichier
-    echo " Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $(((256 + (octet4ip | ~octetdecimal4masque))-1)))" | tee -a $fichier
-    echo " Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $(((256 + (octet4ip | ~octetdecimal4masque))-1)))" | tee -a $fichier
+    echo "$(format "|Adresse du dernier hôte : ")" | tee -a $fichier
+    echo "$(format "|Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$(((256 + (octet4ip | ~octetdecimal4masque))-1))")" | tee -a $fichier
+    echo "$(format "|Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $(((256 + (octet4ip | ~octetdecimal4masque))-1)))")" | tee -a $fichier
+    echo "$(format "|Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $(((256 + (octet4ip | ~octetdecimal4masque))-1)))")" | tee -a $fichier
     echo '└---------------------------------------------┘' | tee -a $fichier
     echo '' | tee -a $fichier
     echo '' | tee -a $fichier
