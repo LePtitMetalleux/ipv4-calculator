@@ -10,7 +10,7 @@ Très simple d'utilisation, elle vous permet de calculer différents information
 - Première et dernière adresse d'hôte
 L'affichage des informations se fait via la console ainsi que dans un fichier texte !
 
-Mode interactif ou non aux choix via un fichier de configuration !
+Mode interactif ou non au choix via un fichier de configuration !
 
 Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 
