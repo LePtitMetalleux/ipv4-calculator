@@ -13,15 +13,15 @@ Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
 
 Sortie :
- 
+
 ![image](https://user-images.githubusercontent.com/59097429/116513398-cf9d0880-a8c9-11eb-985c-2ab34f2b9fdc.png)
 
 TODO :
-Mode interactif
 
 Fichier de config :
-  - Sélection du mode interactif ou non ?
   - Format de sortie : Console, fichier (fotmat de fichier ? csv, txt) ou les deux
     - Si CSV : Un seul fichier ou en séparés ?
+
+Mise en place de code de sortie
 
 Support IPv6 ?
