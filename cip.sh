@@ -4,7 +4,7 @@
 # Utilité : Calculatrice IPv4 multifonctions
 # Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 # Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
-# Version 1.4.0
+# Version 1.4.1
 # Licence : MIT License
 
 # Copyright (c) 2021 LePtitMetalleux
@@ -88,6 +88,10 @@ calcul() {
         # On découpe l'arguement ou prendre le Masque CIDR
         masquecidr=$(echo $traitement | cut -d \/ -f 2)
 
+        echo "Masque CIDR : $masquecidr"
+
+        [ "$masquecidr" == '' -o "$masquecidr" == "$ip" ] && echo "Je n'ai pas trouvé le masque CIDR dans l'entrée suivante : $traitement. Veuillez vérifier la syntaxe de votre commande." && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
+
         [ $masquecidr -gt 32 -o $masquecidr -lt 0 ] && echo "Le masque indiqué (/$masquecidr) pour l'adresse IP $ip est invalide. Le masque doit être compris entre 0 et 32." && continue
 
         # Création de variables en découpant l'ip aux points
@@ -133,9 +137,6 @@ calcul() {
         octetdecimal2masque=$(bin2dec $octetbinaire2masque)
         octetdecimal3masque=$(bin2dec $octetbinaire3masque)
         octetdecimal4masque=$(bin2dec $octetbinaire4masque)
-
-        # Masque en décimal pointé
-        masquedp=$(echo "${octetdecimal1masque}.${octetdecimal2masque}.${octetdecimal3masque}.${octetdecimal4masque}")
 
         # Création des variables contenant les octets de l'ip en binaire
         octetbinaire1ip=$(dec2bin $octet1ip)
@@ -195,7 +196,7 @@ calcul() {
         echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
         echo "|             Masque du réseau :              |" | tee -a $fichier
-        echo "$(format "|Décimal : $masquedp")" | tee -a $fichier
+        echo "$(format "|Décimal : ${octetdecimal1masque}.${octetdecimal2masque}.${octetdecimal3masque}.${octetdecimal4masque}")" | tee -a $fichier
         echo "$(format "|Binaire : $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque")" | tee -a $fichier
         echo "$(format "|CIDR : /$masquecidr")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $octetdecimal1masque).$(dec2hex $octetdecimal2masque).$(dec2hex $octetdecimal3masque).$(dec2hex $octetdecimal4masque)")" | tee -a $fichier
