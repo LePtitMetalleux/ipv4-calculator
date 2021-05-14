@@ -88,8 +88,6 @@ calcul() {
         # On découpe l'arguement ou prendre le Masque CIDR
         masquecidr=$(echo $traitement | cut -d \/ -f 2)
 
-        echo "Masque CIDR : $masquecidr"
-
         [ "$masquecidr" == '' -o "$masquecidr" == "$ip" ] && echo "Je n'ai pas trouvé le masque CIDR dans l'entrée suivante : $traitement. Veuillez vérifier la syntaxe de votre commande." && echo $(cat $0 | head -n 5 | tail -1 | cut -d ' ' -f 2-) && echo $(cat $0 | head -n 6 | tail -1 | cut -d ' ' -f 2-) && exit 1
 
         [ $masquecidr -gt 32 -o $masquecidr -lt 0 ] && echo "Le masque indiqué (/$masquecidr) pour l'adresse IP $ip est invalide. Le masque doit être compris entre 0 et 32." && continue
