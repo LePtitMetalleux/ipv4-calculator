@@ -4,7 +4,7 @@
 # Utilité : Calculatrice IPv4 multifonctions
 # Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 # Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
-# Version 2.0.0
+# Version 2.0.1
 # Licence : MIT License
 
 # Copyright (c) 2021 LePtitMetalleux
@@ -26,6 +26,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+[ ! -e '/usr/bin/bc' ] || [ ! -e '/bin/bc' ] && echo "La commande bc est introuvable, veuillez l'installer avant toute exécution du script" && echo "apt install bc" && exit 1
 
 [ ! -e "config.cfg" ] && echo "Fichier de configuration introuvable. Veuillez vérifier l'emplacement du fichier config.cfg" && exit 1
 
@@ -245,7 +247,7 @@ then
     if [ $exitstatus = 0 ]
     then
         calcul $ip
-        whiptail --textbox $fichier 40 60 --title $ip
+        whiptail --textbox $fichier 45 53 --title $ip
     fi
 elif [ "$INTERACTIF" == 'true' ]
 then
