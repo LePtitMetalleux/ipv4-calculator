@@ -4,7 +4,7 @@
 # Utilité : Calculatrice IPv4 multifonctions
 # Usage : ./cip.sh IPv4/MasqueCIDR (IPv4/MasqueCIDR) (...)
 # Exemple : ./cip.sh 192.168.14.20/24 123.45.67.89/10
-# Version 1.4.1
+# Version 2.0.0
 # Licence : MIT License
 
 # Copyright (c) 2021 LePtitMetalleux
@@ -39,10 +39,12 @@ bin2dec() {
 # Fonction de conversion décimal à binaire
 dec2bin() {
     bin=$(bc <<< "obase=2;$1")
+    # Le # nous retourne la taille de la chaîne de caractères
     taille=${#bin}
     while [ $taille -lt 8 ]
     do
         bin="0${bin}"
+        # Le # nous retourne la taille de la chaîne de caractères
         taille=${#bin}
     done
     echo "$bin"
@@ -51,10 +53,12 @@ dec2bin() {
 # Fonction de conversion décimal vers hexadécimal
 dec2hex() {
     bin=$(bc <<< "obase=16;$1")
+    # Le # nous retourne la taille de la chaîne de caractères
     taille=${#bin}
     while [ $taille -lt 2 ]
     do
         bin="0${bin}"
+        # Le # nous retourne la taille de la chaîne de caractères
         taille=${#bin}
     done
     echo "$bin"
@@ -65,10 +69,12 @@ format() {
     formatedlength=46
     # Ligne à traiter
     toformat=$1
+    # Le # nous retourne la taille de la chaîne de caractères
     taille=${#toformat}
     while [ $taille -lt $formatedlength ]
     do
         toformat="$toformat "
+        # Le # nous retourne la taille de la chaîne de caractères
         taille=${#toformat}
     done
     toformat="$toformat|"
@@ -117,6 +123,7 @@ calcul() {
             else
                 masquebin="${masquebin}0"
             fi
+            # Le # nous retourne la taille de la chaîne de caractères
             taille=${#masquebin}
             # Tous les 8 bits, on ajoute un point à notre chaine de caractères
             if [ $taille -eq 8 -o $taille -eq 17 -o $taille -eq 26 ]
@@ -161,24 +168,24 @@ calcul() {
         # Exception pour les IPs en /32
         if [ $masquecidr -eq 32 ]
         then
-            echo '┌---------------------------------------------┐' | tee -a $fichier
-            echo "|           Adresse de la machine :           |" | tee -a $fichier
+            echo '┌---------------------------------------------┐' | tee -a $fichier # La commande Tee Linux lit l’entrée standard et l’écrit à la fois dans le résultat standard et dans un ou plusieurs fichiers.
+            echo '|           Adresse de la machine :           |' | tee -a $fichier
             echo "$(format "|Décimal : $ip")" | tee -a $fichier
             echo "$(format "|Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip")" | tee -a $fichier
             echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
             echo '|---------------------------------------------|' | tee -a $fichier
-            echo "|             Masque du réseau :              |" | tee -a $fichier
-            echo "|Décimal : 255.255.255.255                    |" | tee -a $fichier
-            echo "|Binaire : 11111111.11111111.11111111.11111111|" | tee -a $fichier
-            echo "|CIDR : /32                                   |" | tee -a $fichier
-            echo "|Hexadécimal : FF.FF.FF.FF                    |" | tee -a $fichier
+            echo '|             Masque du réseau :              |' | tee -a $fichier
+            echo '|Décimal : 255.255.255.255                    |' | tee -a $fichier
+            echo '|Binaire : 11111111.11111111.11111111.11111111|' | tee -a $fichier
+            echo '|CIDR : /32                                   |' | tee -a $fichier
+            echo '|Hexadécimal : FF.FF.FF.FF                    |' | tee -a $fichier
             echo '|---------------------------------------------|' | tee -a $fichier
-            echo "|              Masque inverse :               |" | tee -a $fichier
-            echo "|Décimal 0.0.0.0                              |" | tee -a $fichier
-            echo "|Binaire : 00000000.00000000.00000000.00000000|" | tee -a $fichier
-            echo "|Hexadécimal : 00.00.00.00                    |" | tee -a $fichier
+            echo '|              Masque inverse :               |' | tee -a $fichier
+            echo '|Décimal 0.0.0.0                              |' | tee -a $fichier
+            echo '|Binaire : 00000000.00000000.00000000.00000000|' | tee -a $fichier
+            echo '|Hexadécimal : 00.00.00.00                    |' | tee -a $fichier
             echo '|---------------------------------------------|' | tee -a $fichier
-            echo "|            Seul hôte possible :             |" | tee -a $fichier
+            echo '|            Seul hôte possible :             |' | tee -a $fichier
             echo "$(format "|Décimal : $ip")" | tee -a $fichier
             echo "$(format "|Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip")" | tee -a $fichier
             echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
@@ -187,41 +194,41 @@ calcul() {
         fi
 
         # Affichage des informations à l'écran et enregistrement dans le fichier 
-        echo '┌---------------------------------------------┐' | tee -a $fichier
-        echo "|           Adresse de la machine :           |" | tee -a $fichier
+        echo '┌---------------------------------------------┐' | tee -a $fichier # La commande Tee Linux lit l’entrée standard et l’écrit à la fois dans le résultat standard et dans un ou plusieurs fichiers.
+        echo '|           Adresse de la machine :           |' | tee -a $fichier
         echo "$(format "|Décimal : $ip")" | tee -a $fichier
         echo "$(format "|Binaire : $octetbinaire1ip.$octetbinaire2ip.$octetbinaire3ip.$octetbinaire4ip")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $octet1ip).$(dec2hex $octet2ip).$(dec2hex $octet3ip).$(dec2hex $octet4ip)")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|             Masque du réseau :              |" | tee -a $fichier
+        echo '|             Masque du réseau :              |' | tee -a $fichier
         echo "$(format "|Décimal : ${octetdecimal1masque}.${octetdecimal2masque}.${octetdecimal3masque}.${octetdecimal4masque}")" | tee -a $fichier
         echo "$(format "|Binaire : $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque")" | tee -a $fichier
         echo "$(format "|CIDR : /$masquecidr")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $octetdecimal1masque).$(dec2hex $octetdecimal2masque).$(dec2hex $octetdecimal3masque).$(dec2hex $octetdecimal4masque)")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|              Masque inverse :               |" | tee -a $fichier
+        echo '|              Masque inverse :               |' | tee -a $fichier
         echo "$(format "|Décimal $((255 - $octetdecimal1masque)).$((255 - $octetdecimal2masque)).$((255 - $octetdecimal3masque)).$((255 - $octetdecimal4masque))")" | tee -a $fichier
         echo "$(format "|Binaire : $(echo $octetbinaire1masque.$octetbinaire2masque.$octetbinaire3masque.$octetbinaire4masque | tr '1' '_' | tr '0' '1' | tr '_' '0')")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $((255 - $octetdecimal1masque))).$(dec2hex $((255 - $octetdecimal2masque))).$(dec2hex $((255 - $octetdecimal3masque))).$(dec2hex $((255 - $octetdecimal4masque)))")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|             Adresse du réseau :             |" | tee -a $fichier
+        echo '|             Adresse du réseau :             |' | tee -a $fichier
         echo "$(format "|Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$((octet4ip & octetdecimal4masque))")" | tee -a $fichier
         echo "$(format "|Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $((octet4ip & octetdecimal4masque)))")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $((octet4ip & octetdecimal4masque)))")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|            Adresse de broadcast :           |" | tee -a $fichier
+        echo '|            Adresse de broadcast :           |' | tee -a $fichier
         echo "$(format "|Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$((256 + (octet4ip | ~octetdecimal4masque)))")" | tee -a $fichier
         echo "$(format "|Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $((256 + (octet4ip | ~octetdecimal4masque))))")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $((256 + (octet4ip | ~octetdecimal4masque))))")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
         echo "$(format "|Nombre d'hôtes possibles : $((2 ** (32 - $masquecidr) - 2))")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|          Adresse du premier hôte :          |" | tee -a $fichier
+        echo '|          Adresse du premier hôte :          |' | tee -a $fichier
         echo "$(format "|Décimal : $((octet1ip & octetdecimal1masque)).$((octet2ip & octetdecimal2masque)).$((octet3ip & octetdecimal3masque)).$(((octet4ip & octetdecimal4masque)+1))")" | tee -a $fichier
         echo "$(format "|Binaire : $(dec2bin $((octet1ip & octetdecimal1masque))).$(dec2bin $((octet2ip & octetdecimal2masque))).$(dec2bin $((octet3ip & octetdecimal3masque))).$(dec2bin $(((octet4ip & octetdecimal4masque)+1)))")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $((octet1ip & octetdecimal1masque))).$(dec2hex $((octet2ip & octetdecimal2masque))).$(dec2hex $((octet3ip & octetdecimal3masque))).$(dec2hex $(((octet4ip & octetdecimal4masque)+1)))")" | tee -a $fichier
         echo '|---------------------------------------------|' | tee -a $fichier
-        echo "|          Adresse du dernier hôte :          |" | tee -a $fichier
+        echo '|          Adresse du dernier hôte :          |' | tee -a $fichier
         echo "$(format "|Décimal : $((256 + (octet1ip | ~octetdecimal1masque))).$((256 + (octet2ip | ~octetdecimal2masque))).$((256 + (octet3ip | ~octetdecimal3masque))).$(((256 + (octet4ip | ~octetdecimal4masque))-1))")" | tee -a $fichier
         echo "$(format "|Binaire : $(dec2bin $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2bin $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2bin $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2bin $(((256 + (octet4ip | ~octetdecimal4masque))-1)))")" | tee -a $fichier
         echo "$(format "|Hexadécimal : $(dec2hex $((256 + (octet1ip | ~octetdecimal1masque)))).$(dec2hex $((256 + (octet2ip | ~octetdecimal2masque)))).$(dec2hex $((256 + (octet3ip | ~octetdecimal3masque)))).$(dec2hex $(((256 + (octet4ip | ~octetdecimal4masque))-1)))")" | tee -a $fichier
@@ -231,23 +238,31 @@ calcul() {
     done
 }
 
-if [ "$INTERACTIF" == 'true' ]
+if [ "$GRAPHIC" == 'true' ]
+then
+    ip=$(whiptail --inputbox "Veuillez indiquer l'adresse IPv4 à traiter avec le masque CIDR sous le format suivant : IPv4/MasqueCIDR" 8 78 192.168.1.14/24 --title "Calculatrice IPv4" 3>&1 1>&2 2>&3)
+    exitstatus=$?
+    if [ $exitstatus = 0 ]
+    then
+        calcul $ip
+        whiptail --textbox $fichier 40 60 --title $ip
+    fi
+elif [ "$INTERACTIF" == 'true' ]
 then
     # Mode interactif
     echo 'Bienvenue sur le mode interactif de la calculatrice IPv4'
     echo "Veuillez indiquer l'adresse IPv4 à traiter avec le masque CIDR sous le format suivant : IPv4/MasqueCIDR"
     echo 'Pour annuler répondez par "stop"'
-    read -p "IPv4 à traiter : " request
-    [ "$request" == 'stop' ] && echo "Merci d'avoir utilisé la calculatrice IPv4 !" && exit 0
+    read -p "IPv4 à traiter : " reponse
+    [ "$reponse" == 'stop' ] && echo "Merci d'avoir utilisé la calculatrice IPv4 !" && exit 0
     while :
     do
-        calcul $request
-        read -p "Voulez-vous traiter une nouvelle adresse IPv4 ? [y/n] " request
-        [ "$request" == 'n' -o "$request" == 'N' ] && break
-        read -p "IPv4 à traiter : " request
+        calcul $reponse
+        read -p "Voulez-vous traiter une nouvelle adresse IPv4 ? [y/n] " reponse
+        [ "$reponse" == 'n' -o "$reponse" == 'N' ] && break
+        read -p "IPv4 à traiter : " reponse
     done
     echo "Merci d'avoir utilisé la calculatrice IPv4 !" && exit 0
-    calcul $traiter
 else
     # Mode non-interactif
     # On retourne le menu d'aide si aucun argument n'est fourni
